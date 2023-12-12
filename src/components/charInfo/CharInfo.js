@@ -1,18 +1,97 @@
+
+import { Component } from 'react';
+
+import MarvelService from '../../services/MarvelService';
+import ErrorMessage from '../errorMessage/ErrorMessage';
+import Spinner from '../spinner/Spinner';
+import Skeleton from '../skeleton/Skeleton';
+
 import './charInfo.scss';
 import thor from '../../resources/img/thor.jpeg';
 
-const CharInfo = () => {
+class CharInfo extends Component     {
+    state = {
+        char: null,
+        loading: false,
+        error: false
+    }
+
+
+    marvelService = new MarvelService();
+
+    componentDidMount() {
+        this.updateChar();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        
+    }
+
+    onCharLoaded = (char) => {
+        this.setState({
+            char,
+            loading: false
+        })
+    }
+
+    onError = () => {
+        this.setState({
+            loading: false,
+            error: true
+        })
+    } 
+
+    onCharLoading = () => {
+        this.setState({
+            loading: true
+        })
+    }
+
+    updateChar = () => {
+        const {charId} = this.props;
+        if (!charId) {
+            return;
+        }
+        this.onCharLoading();
+        this.marvelService
+                .getChar(charId)
+                .then(this.onCharLoaded)
+                .catch(this.onError)
+    }
+    render() {
+
+        const {char, loading, error} =  this.state;
+        const skeleton = loading || error || char ? null : <Skeleton/>
+        const errorMessage = error ? <ErrorMessage/> : null;
+        const spinner = loading ? <Spinner/> : null;
+        const content = !(loading || error) && char ? <View char={char}/> : null;
+
+        
+        return (
+            <div className="char__info">
+                {skeleton}
+                {errorMessage}
+                {spinner}
+                {content}
+            </div>
+        );
+    }
+}
+
+const View = ({char}) => {
+    const {thumbnail, name, wiki, homepage} = char;
+
     return (
-        <div className="char__info">
+        <>
             <div className="char__basics">
                 <img src={thor} alt="abyss"/>
                 <div>
                     <div className="char__info-name">thor</div>
                     <div className="char__btns">
-                        <a href="#" className="button button__main">
+                        <a href="https://vk.com/larr1" className="button button__main">
                             <div className="inner">homepage</div>
                         </a>
-                        <a href="#" className="button button__secondary">
+                        <a href="https://vk.com/larr1" className="button button__secondary">
                             <div className="inner">Wiki</div>
                         </a>
                     </div>
@@ -54,8 +133,9 @@ const CharInfo = () => {
                     Avengers (1996) #1
                 </li>
             </ul>
-        </div>
-    )
+        </>
+    );
 }
 
 export default CharInfo;
+
