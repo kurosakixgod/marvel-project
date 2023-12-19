@@ -22,8 +22,27 @@
             line-height: 32px;
             li {
                 margin: 0 8px;
+                a {
+                    position: relative;
+                    
+                }
                 a:hover {
                     color: $main-color;
+                
+                }
+                a::after {
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    background-color: $main-color;
+                    content: '';
+                    width: 0%;
+                    height: 3px;
+                    border-radius: 16px;
+                    transition: 0.3s width;
+                }
+                a:hover::after {
+                    width: 100%;
                 }
             }
         }

@@ -4,6 +4,7 @@
     display: grid;
     grid-template-columns: repeat(2, 50%);
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
     &__block {
         padding: 40px 35px;
         display: grid;
@@ -14,6 +15,7 @@
         width: 180px;
         height: 180px;
         object-fit: cover;
+        border-radius: 16px;
     }
     &__img_not-available{
         width: 180px;
@@ -45,6 +47,7 @@
         padding: 40px 35px;
         background-color: $dark;
         position: relative;
+        border-radius: 0 16px 16px 0;
         button {
             margin-top: 13px;
         }
